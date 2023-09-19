@@ -34,6 +34,10 @@ public class ApplicationUser implements UserDetails {
         this.dateOfBirth = dateOfBirth;
         this.bio = bio;
     }
+
+    public ApplicationUser() {
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -85,8 +89,8 @@ public class ApplicationUser implements UserDetails {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = this.dateOfBirth;
     }
 
     public String getBio() {
@@ -125,5 +129,8 @@ public class ApplicationUser implements UserDetails {
 
     public void setLocalDate(LocalDate localDate) {
         this.localDate = localDate;
+    }
+
+    public void setFirstName() {
     }
 }
