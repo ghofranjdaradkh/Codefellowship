@@ -41,7 +41,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 //accessible to all users without authentication
-                .antMatchers("/", "/login", "/signup").permitAll()
+                .antMatchers( "/","/login", "/signup").permitAll()
+                .antMatchers("/css/**").permitAll()
+
+//                .antMatchers( "/posts").authenticated()
                 //any other request requires authentication
                 .anyRequest().authenticated()
                 .and()
@@ -49,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .permitAll()
                 .loginProcessingUrl("/perform_login")
-                .defaultSuccessUrl("/home", true)
+                .defaultSuccessUrl("/myprofile", true)
                 .failureUrl("/login?error=true")
                 .and()
                 .logout()

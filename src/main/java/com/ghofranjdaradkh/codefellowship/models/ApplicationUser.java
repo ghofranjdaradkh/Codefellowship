@@ -4,13 +4,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class ApplicationUser implements UserDetails {
@@ -26,7 +25,11 @@ public class ApplicationUser implements UserDetails {
     private Date dateOfBirth;
     private String bio;
 
-    public ApplicationUser(String username, String password, String firstName, String lastName,   @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateOfBirth, String bio) {
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<post> posts ;
+
+
+    public ApplicationUser(String username, String password, String firstName, String lastName,  Date dateOfBirth, String bio) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
