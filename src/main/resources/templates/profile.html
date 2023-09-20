@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>My Profile</title>
+    <link rel="stylesheet" href="styling.css" >
+</head>
+<body>
+<h1>My Profile</h1>
+<img src="src\main\resources\pic\profile.jpg" alt="Default Profile Picture">
+<p>Username: <span id="username" th:text="${username}"></span></p>
+<p>First Name: <span id="firstName" th:text="${firstName}"></span></p>
+<p>Last Name: <span id="lastName" th:text="${lastName}"></span></p>
+<p>Date of Birth: <span id="dateOfBirth" th:text="${dateOfBirth}"></span></p>
+<p>Bio: <span id="bio" th:text="${bio}"></span></p>
+</body>
+</html>

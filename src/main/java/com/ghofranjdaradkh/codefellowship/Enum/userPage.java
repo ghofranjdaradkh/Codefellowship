@@ -1,5 +1,5 @@
-package com.ghofranjdaradkh.codefellowship.Enum;
-
-public enum userPage {
-    username,password,localDate,
-}
+//package com.ghofranjdaradkh.codefellowship.Enum;
+//
+//public enum userPage {
+//    username,password,localDate,
+//}

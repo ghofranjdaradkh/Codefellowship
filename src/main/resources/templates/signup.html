@@ -2,21 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>signup page</title>
+  <title>Signup Page</title>
   <link rel="stylesheet" href="styling.css">
 </head>
 <body>
 
-<h1>signup page</h1>
+<h1>Signup Page</h1>
 
 <fieldset>
-  <legend>sign UP </legend>
+  <legend>Sign Up</legend>
   <form action="/signup" method="POST">
-    <label for="username">username</label>
-    <input type="text" name="username" id="username">
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username" >
 
     <label for="password">Password</label>
-    <input type="password" name="password" id="password">
+    <input type="password" name="password" id="password" >
+
+    <label for="firstName">First Name</label>
+    <input type="text" name="firstName" id="firstName" >
+
+    <label for="lastName">Last Name</label>
+    <input type="text" name="lastName" id="lastName" >
+
+    <label for="dateOfBirth">Date of Birth</label>
+    <input type="date" name="dateOfBirth" id="dateOfBirth" >
+
+    <label for="bio">Bio</label>
+    <textarea name="bio" id="bio" rows="4" ></textarea>
 
     <input type="submit" value="Sign Up">
   </form>

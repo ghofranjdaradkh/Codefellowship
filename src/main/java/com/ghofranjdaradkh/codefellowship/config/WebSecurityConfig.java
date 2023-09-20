@@ -10,15 +10,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public static final String AUTH_PATH = "/api/v1/auth/**";
+//    public static final String AUTH_PATH = "/api/v1/auth/**";
 
-    @Autowired
-    private SiteUserDetailsServiceImpl userDetailsService;
+        @Autowired
+       private SiteUserDetailsServiceImpl userDetailsService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -26,26 +27,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return bCryptPasswordEncoder;
     }
 
+    //to manage the process of Authentication >> it depend on user details & passwordEncoder
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
+    //to secure the request itself and http
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
                 .cors().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/userInfo", "/login", "/signup").permitAll()
+                //accessible to all users without authentication
+                .antMatchers("/", "/login", "/signup").permitAll()
+                //any other request requires authentication
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
                 .loginProcessingUrl("/perform_login")
-                .defaultSuccessUrl("/", true)
-                .failureUrl("/login?error=true") // Update the failure URL
+                .defaultSuccessUrl("/home", true)
+                .failureUrl("/login?error=true")
                 .and()
                 .logout()
                 .logoutUrl("/perform_logout")
