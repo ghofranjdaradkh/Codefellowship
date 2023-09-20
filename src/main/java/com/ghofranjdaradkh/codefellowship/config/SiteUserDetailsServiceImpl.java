@@ -10,8 +10,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SiteUserDetailsServiceImpl implements UserDetailsService {
+
+
+
+    //to interact with the data store where user information is stored.
     @Autowired
     ApplicationUserRepository applicationUserRepository;
+
+
+    //method is responsible for loading user details or fetching data from DB
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         ApplicationUser applicationUser=applicationUserRepository.findByUsername(username);
@@ -23,6 +30,7 @@ public class SiteUserDetailsServiceImpl implements UserDetailsService {
         System.out.println("Found User: "+applicationUser.getUsername());
         return applicationUser;
     }
+
 
 
     }

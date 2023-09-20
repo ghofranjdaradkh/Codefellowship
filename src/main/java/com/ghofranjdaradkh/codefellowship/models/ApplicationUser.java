@@ -1,5 +1,6 @@
 package com.ghofranjdaradkh.codefellowship.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,16 +20,15 @@ public class ApplicationUser implements UserDetails {
     private Long id;
     private String username;
     private String password;
-    private LocalDate localDate;
+
     private String firstName ;
     private String lastName;
     private Date dateOfBirth;
     private String bio;
 
-    public ApplicationUser(String username, String password, LocalDate localDate, String firstName, String lastName, Date dateOfBirth, String bio) {
+    public ApplicationUser(String username, String password, String firstName, String lastName,   @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateOfBirth, String bio) {
         this.username = username;
         this.password = password;
-        this.localDate = localDate;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -123,14 +123,5 @@ public class ApplicationUser implements UserDetails {
         this.password = password;
     }
 
-    public LocalDate getLocalDate() {
-        return localDate;
-    }
 
-    public void setLocalDate(LocalDate localDate) {
-        this.localDate = localDate;
-    }
-
-    public void setFirstName() {
-    }
 }

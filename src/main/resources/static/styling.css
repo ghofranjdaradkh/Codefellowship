@@ -107,3 +107,33 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #CAEDFF;
 }
+
+ body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #profile-picture {
+            display: block;
+            margin: 20px auto;
+            max-width: 200px;
+            border-radius: 50%;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 10px;
+        }
+
+        #username {
+            font-weight: bold;
+        }
