@@ -4,6 +4,7 @@ import com.ghofranjdaradkh.codefellowship.Repositroy.ApplicationUserRepository;
 import com.ghofranjdaradkh.codefellowship.config.SiteUserDetailsServiceImpl;
 import com.ghofranjdaradkh.codefellowship.models.ApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.Date;
 
 @Controller
 public class ApplicationUserController {
@@ -54,9 +56,25 @@ public class ApplicationUserController {
 
 
     @GetMapping("/")
-    public String index(){
+    public String getHomePage(Principal p, Model m){
+
+        if(p != null){
+            String username = p.getName();
+            ApplicationUser User= ApplicationUserRepository.findByUsername(username);
+
+            m.addAttribute("username", username);
+            m.addAttribute("createdDate", User.getBio());
+
+        }
+
         return "index.html";
     }
+
+    @GetMapping("/main")
+        public String main () {
+        return"index.html" ;
+        }
+
 
     @GetMapping("/login")
     public String getLoginPage(){
@@ -78,15 +96,18 @@ public class ApplicationUserController {
 
 
     @PostMapping("/signup")
-    public RedirectView createUser(String username, String password,String dateOfBirth,String  lastName,String bio, String firstName){
- ApplicationUser appUser=new ApplicationUser();
-        appUser.setUsername(username);
-        appUser.setDateOfBirth(dateOfBirth);
-        appUser.setBio(bio);
-        appUser.setLastName(lastName);
-        appUser.setFirstName(firstName);
+    public RedirectView createUser(String username, String password, @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateOfBirth, String  lastName, String bio, String firstName){
         String encryptedPassword = passwordEncoder.encode(password);
-        appUser.setPassword(encryptedPassword);
+ ApplicationUser appUser=new ApplicationUser(username,encryptedPassword,firstName,lastName,dateOfBirth,bio);
+
+//        appUser.setUsername(username);
+//        appUser.setDateOfBirth(dateOfBirth);
+//        System.out.println(dateOfBirth);
+//        appUser.setBio(bio);
+//        appUser.setLastName(lastName);
+//        appUser.setFirstName(firstName);
+//        String encryptedPassword = passwordEncoder.encode(password);
+//        appUser.setPassword(encryptedPassword);
 
       ApplicationUserRepository.save(appUser);
         System.out.println(appUser.getUsername());

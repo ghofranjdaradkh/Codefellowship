@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/post.css">
+</head>
+<body>
+
+<h1>All Users posts</h1>
+
+
+<ul>
+    <li th:each="post : ${posts}">
+        <h2 th:text="${post.id}"></h2>
+        <h2 th:text="${post.user.username}"></h2>
+        <img src="https://cdn-icons-png.flaticon.com/512/3237/3237472.png" alt="Default Profile Picture">
+        <p th:text="${post.body}"></p>
+
+
+    </li>
+</ul>
+
+
+
+<a href="/profile">Back to profile</a>
+<a href="/logout">Back to home</a>
+
+</body>
+</html>
