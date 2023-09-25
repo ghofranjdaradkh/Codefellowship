@@ -6,10 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class ApplicationUser implements UserDetails {
@@ -27,6 +24,19 @@ public class ApplicationUser implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<post> posts ;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_followers",
+            joinColumns = @JoinColumn(name = "follower_id"),
+            inverseJoinColumns = @JoinColumn(name = "followed_id")
+    )
+    Set<ApplicationUser> following;
+
+    @ManyToMany(mappedBy = "following")
+     Set<ApplicationUser> followers ;
+
 
 
     public ApplicationUser(String username, String password, String firstName, String lastName,  Date dateOfBirth, String bio) {
@@ -126,5 +136,12 @@ public class ApplicationUser implements UserDetails {
         this.password = password;
     }
 
+
+    public void addFollower(ApplicationUser applicationUser) {
+
+    }
+
+    public void removeFollower(ApplicationUser applicationUser) {
+    }
 
 }
