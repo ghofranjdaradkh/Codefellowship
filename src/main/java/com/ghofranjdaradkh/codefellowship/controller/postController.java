@@ -57,4 +57,22 @@ public class postController {
 
         return new RedirectView("/profile");
     }
+
+
+
+
+
+
+
+
+    @GetMapping("/feed")
+    public String getFeed(Principal p, Model m) {
+        ApplicationUser applicationUser = ApplicationUserRepository.findByUsername(p.getName());
+        m.addAttribute("applicationUser", applicationUser);
+        return "feed";
+    }
+
+
+
+
 }

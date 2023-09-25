@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class ApplicationUserController {
@@ -149,23 +150,69 @@ return "profile";
     return new RedirectView("/profile");
 
 }
-@GetMapping("/user/{id}")
-public String showUserInfo(Principal p, Model model , @PathVariable Long id){
-        if(p !=null){
-            String userName =p.getName();
+
+    @GetMapping("/users")
+    public String AllUsers(Principal p, Model m) {
+        ApplicationUser applicationUser = ApplicationUserRepository.findByUsername(p.getName());
+        List<ApplicationUser> allUsers = ApplicationUserRepository.findAll();
+        m.addAttribute("applicationUser", applicationUser);
+        m.addAttribute("allUsers", allUsers);
+        return "users";
+    }
+    @GetMapping("/users/{id}")
+    public String getOneUser(@PathVariable long id, Principal p, Model m) {
+        ApplicationUser allUser = ApplicationUserRepository.findById(id).get();
+        ApplicationUser currentUser = ApplicationUserRepository.findByUsername(p.getName());
+        m.addAttribute("allUser", allUser);
+        m.addAttribute("currentUser", currentUser);
+        return "singleUser";
+    }
+
+    @GetMapping("/user/{id}")
+    public String showUserInfo(Principal p, Model model, @PathVariable Long id) {
+        if (p != null) {
+            String userName = p.getName();
             ApplicationUser userApp = ApplicationUserRepository.findByUsername(userName);
 
             model.addAttribute("username", userName);
-            model.addAttribute("firstName",userApp.getFirstName());
-            model.addAttribute("lastName",userApp.getLastName());
-            model.addAttribute("dateOfBirth",userApp.getDateOfBirth());
-            model.addAttribute("bio",userApp.getBio());
+            model.addAttribute("firstName", userApp.getFirstName());
+            model.addAttribute("lastName", userApp.getLastName());
+            model.addAttribute("dateOfBirth", userApp.getDateOfBirth());
+            model.addAttribute("bio", userApp.getBio());
 
             ApplicationUser user = ApplicationUserRepository.findById(id)
-               .orElseThrow(() -> new ResourceNotFoundException("user not found with id "+id));
-        }return "profile";
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
 
-}
+
+            model.addAttribute("user", user);
+            model.addAttribute("firstName",user.getFirstName());
+            model.addAttribute("lastName", user.getLastName());
+            model.addAttribute("dateOfBirth", user.getDateOfBirth());
+            model.addAttribute("bio", user.getBio());
+
+
+
+            return "userInformation";
+        } else {
+            return "signup";
+        }
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public class ResourceNotFoundException extends RuntimeException
