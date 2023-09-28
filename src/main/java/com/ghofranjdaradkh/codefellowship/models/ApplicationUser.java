@@ -17,13 +17,13 @@ public class ApplicationUser implements UserDetails {
     private String username;
     private String password;
 
-    private String firstName ;
+    private String firstName;
     private String lastName;
     private Date dateOfBirth;
     private String bio;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<post> posts ;
+    private List<post> posts;
 
 
     @ManyToMany
@@ -35,11 +35,10 @@ public class ApplicationUser implements UserDetails {
     Set<ApplicationUser> following;
 
     @ManyToMany(mappedBy = "following")
-     Set<ApplicationUser> followers ;
+    Set<ApplicationUser> followers;
 
 
-
-    public ApplicationUser(String username, String password, String firstName, String lastName,  Date dateOfBirth, String bio) {
+    public ApplicationUser(String username, String password, String firstName, String lastName, Date dateOfBirth, String bio) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -55,27 +54,26 @@ public class ApplicationUser implements UserDetails {
     public boolean isAccountNonExpired() {
         return true;
     }
+
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
+
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
     @Override
     public boolean isEnabled() {
         return true;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
-
-
-
-
-
 
 
     public Long getId() {
@@ -127,7 +125,6 @@ public class ApplicationUser implements UserDetails {
     }
 
 
-
     public String getPassword() {
         return password;
     }
@@ -144,4 +141,15 @@ public class ApplicationUser implements UserDetails {
     public void removeFollower(ApplicationUser applicationUser) {
     }
 
+    public Set<ApplicationUser> getFollowedUsers() {
+        return followers;
+    }
+
+    public boolean isFollowing(ApplicationUser profileUser) {
+        return false;
+    }
+
+    public Collection<? extends post> getPostListByUser() {
+        return null;
+    }
 }

@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class postController {
@@ -65,14 +69,29 @@ public class postController {
 
 
 
+//    @GetMapping("/feed")
+//    public String getFeed(Principal p, Model m) {
+//        ApplicationUser applicationUser = ApplicationUserRepository.findByUsername(p.getName());
+//        m.addAttribute("applicationUser", applicationUser);
+//        return "feed";
+//    }
+
+
+
     @GetMapping("/feed")
-    public String getFeed(Principal p, Model m) {
-        ApplicationUser applicationUser = ApplicationUserRepository.findByUsername(p.getName());
-        m.addAttribute("applicationUser", applicationUser);
-        return "feed";
+    public String getMyFeed(Principal p, Model m) {
+        if (p != null) {
+            String username = p.getName();
+            ApplicationUser currentUser = (ApplicationUser) ApplicationUserRepository.findByUsername(username);
+            m.addAttribute("applicationUser", currentUser);
+            List<post> postsList = new ArrayList<>();
+            for (ApplicationUser user : currentUser.getFollowedUsers()) {
+                postsList.addAll(user.getPostListByUser());
+            }
+            m.addAttribute("posts", postsList);
+            m.addAttribute("username", currentUser.getUsername());
+        }
+        return ("post.html");
     }
-
-
-
 
 }

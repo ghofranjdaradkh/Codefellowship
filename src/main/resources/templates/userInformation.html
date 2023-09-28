@@ -8,12 +8,12 @@
 <body>
 
 <div class="container">
-  <h1>Welcome, <span th:text="${username}"></span></h1>
+  <h1>Welcome, <span th:text="${user}"></span></h1>
 
   <a href="/logout">Back to home</a>
   <img src="https://cdn-icons-png.flaticon.com/512/3237/3237472.png" alt="Default Profile Picture" class="profile-image">
   <div class="profile-info">
-    <p>Username: <span id="username" th:text="${username}"></span></p>
+    <p>Username: <span id="username" th:text="${user}"></span></p>
     <p>First Name: <span id="firstName" th:text="${firstName}"></span></p>
     <p>Last Name: <span id="lastName" th:text="${lastName}"></span></p>
     <p>Date of Birth: <span id="dateOfBirth" th:text="${dateOfBirth}"></span></p>
