@@ -13,7 +13,13 @@
 <ul>
     <li th:each="post : ${posts}">
         <h2 th:text="${post.id}"></h2>
-        <h2 th:text="${post.user.username}"></h2>
+        <a th:href="@{'/user/' + ${post.user.username}}">
+            <h2 th:text="${post.user.username}"></h2>
+        </a>
+        <form action="/users/follow" method="post">
+            <input type="hidden" name="followedUsername" th:value="${post.user.username}">
+            <input type="submit" value="Follow">
+        </form>
         <img src="https://cdn-icons-png.flaticon.com/512/3237/3237472.png" alt="Default Profile Picture">
         <p th:text="${post.body}"></p>
 

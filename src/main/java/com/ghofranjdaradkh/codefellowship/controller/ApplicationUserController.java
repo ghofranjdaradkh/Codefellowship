@@ -10,10 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.ServletException;
@@ -101,14 +98,6 @@ public class ApplicationUserController {
         String encryptedPassword = passwordEncoder.encode(password);
  ApplicationUser appUser=new ApplicationUser(username,encryptedPassword,firstName,lastName,dateOfBirth,bio);
 
-//        appUser.setUsername(username);
-//        appUser.setDateOfBirth(dateOfBirth);
-//        System.out.println(dateOfBirth);
-//        appUser.setBio(bio);
-//        appUser.setLastName(lastName);
-//        appUser.setFirstName(firstName);
-//        String encryptedPassword = passwordEncoder.encode(password);
-//        appUser.setPassword(encryptedPassword);
 
       ApplicationUserRepository.save(appUser);
         System.out.println(appUser.getUsername());
@@ -138,18 +127,7 @@ return "profile";
 
 
 
-    //to login new account
 
-    public RedirectView authWithHttpServletRequest(String username, String password){
-
-        try {
-            request.login(username, password);
-        }catch (ServletException e){
-            e.printStackTrace();
-        }
-    return new RedirectView("/profile");
-
-}
 
     @GetMapping("/users")
     public String AllUsers(Principal p, Model m) {
@@ -159,14 +137,33 @@ return "profile";
         m.addAttribute("allUsers", allUsers);
         return "users";
     }
-    @GetMapping("/users/{id}")
-    public String getOneUser(@PathVariable long id, Principal p, Model m) {
-        ApplicationUser allUser = ApplicationUserRepository.findById(id).get();
-        ApplicationUser currentUser = ApplicationUserRepository.findByUsername(p.getName());
-        m.addAttribute("allUser", allUser);
-        m.addAttribute("currentUser", currentUser);
-        return "singleUser";
+
+
+
+
+
+    @PostMapping("/users/follow")
+    public RedirectView addFollower(long followedUser, Principal p) {
+        ApplicationUser user = ApplicationUserRepository.findByUsername(p.getName());
+        user.addFollower(ApplicationUserRepository.findById(followedUser).get());
+        ApplicationUserRepository.save(user);
+        return new RedirectView("/users");
     }
+
+    @PostMapping("/users/unfollow")
+    public RedirectView removeFollower(long unfollowedUser, Principal p) {
+        ApplicationUser user = ApplicationUserRepository.findByUsername(p.getName());
+        user.removeFollower(ApplicationUserRepository.findById(unfollowedUser).get());
+        ApplicationUserRepository.save(user);
+        return new RedirectView("/users");
+    }
+
+
+
+
+
+
+
 
     @GetMapping("/user/{id}")
     public String showUserInfo(Principal p, Model model, @PathVariable Long id) {
@@ -174,36 +171,52 @@ return "profile";
             String userName = p.getName();
             ApplicationUser userApp = ApplicationUserRepository.findByUsername(userName);
 
-            model.addAttribute("username", userName);
-            model.addAttribute("firstName", userApp.getFirstName());
-            model.addAttribute("lastName", userApp.getLastName());
-            model.addAttribute("dateOfBirth", userApp.getDateOfBirth());
-            model.addAttribute("bio", userApp.getBio());
 
             ApplicationUser user = ApplicationUserRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
 
 
-            model.addAttribute("user", user);
-            model.addAttribute("firstName",user.getFirstName());
+            model.addAttribute("user", user.getUsername());
+            model.addAttribute("firstName", user.getFirstName());
             model.addAttribute("lastName", user.getLastName());
             model.addAttribute("dateOfBirth", user.getDateOfBirth());
             model.addAttribute("bio", user.getBio());
 
 
-
             return "userInformation";
         } else {
             return "signup";
-        }
+        }}
 
 
+//    @GetMapping("/user/{username}")
+//    public String userProfile(@PathVariable String username, Principal p, Model model) {
+//
+//        ApplicationUser currentUser = null;
+//        if (p != null) {
+//            currentUser = ApplicationUserRepository.findByUsername(p.getName());
+//        }
+//
+//        ApplicationUser profileUser = ApplicationUserRepository.findByUsername(username);
+//
+//
+//        boolean isFollowing = false;
+//        if (currentUser != null && profileUser != null) {
+//            isFollowing = currentUser.isFollowing(profileUser);
+//        }
+//
+//        model.addAttribute("username", username);
+//        model.addAttribute("firstName", profileUser.getFirstName());
+//        model.addAttribute("lastName", profileUser.getLastName());
+//        model.addAttribute("dateOfBirth", profileUser.getDateOfBirth());
+//        model.addAttribute("bio", profileUser.getBio());
+//        model.addAttribute("isFollowing", isFollowing);
+//
+//
+//
+//        return "profile";
+//    }
 
-
-
-
-
-    }
 
 
 
@@ -221,6 +234,16 @@ return "profile";
         {
             super(message);
         }
+    }
+    public RedirectView authWithHttpServletRequest(String username, String password){
+
+        try {
+            request.login(username, password);
+        }catch (ServletException e){
+            e.printStackTrace();
+        }
+        return new RedirectView("/profile");
+
     }
 
 }

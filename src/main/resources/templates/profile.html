@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
     <title>My Profile</title>
     <link rel="stylesheet" href="css/profile.css">
@@ -7,8 +8,14 @@
 <body>
 
 <div class="container">
-    <h1>Welcome, <span th:text="${username}"></span></h1>
-
+    <h1> <span th:text="${username}"> Information</span></h1>
+<!--    <div class="follow-button">-->
+<!--        <form th:action="@{/follow}" method="post">-->
+<!--            <input type="hidden" name="followedUsername" th:value="${username}" />-->
+<!--            <button type="submit" th:if="${!isFollowing}" class="follow">Follow</button>-->
+<!--            <button type="submit" th:if="${isFollowing}" class="unfollow">Unfollow</button>-->
+<!--        </form>-->
+<!--    </div>-->
     <a href="/logout">Back to home</a>
     <img src="https://cdn-icons-png.flaticon.com/512/3237/3237472.png" alt="Default Profile Picture" class="profile-image">
     <div class="profile-info">
@@ -17,6 +24,8 @@
         <p>Last Name: <span id="lastName" th:text="${lastName}"></span></p>
         <p>Date of Birth: <span id="dateOfBirth" th:text="${dateOfBirth}"></span></p>
         <p>Bio: <span id="bio" th:text="${bio}"></span></p>
+        <p>Bio: <span id="following" th:text="${isFollowing}"></span></p>
+
     </div>
 
     <a th:href="@{/posts}">All Posts</a>
